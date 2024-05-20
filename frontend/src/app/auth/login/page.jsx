@@ -5,8 +5,6 @@ import { useRouter } from "next/navigation";
 import { Input, Button } from "@nextui-org/react";
 import Cookies from 'js-cookie';
 
-import { API_URL } from "@/utils/const";
-
 function LoginPage() {
   const router = useRouter();
 
@@ -20,7 +18,7 @@ function LoginPage() {
     try {
       setIsButtonDisabled(true);
 
-      const res = await fetch(API_URL + "/auth/login", {
+      const res = await fetch(process.env.NEXT_PUBLIC_API_URL + "/auth/login", {
         method: "POST",
         body: JSON.stringify({ email, password }),
         headers: {

@@ -3,7 +3,6 @@
 import { Image, Button } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import Cookies from 'js-cookie';
-import { API_URL } from "@/utils/const";
 
 function CardImage({ image }) {
   const router = useRouter();
@@ -12,7 +11,7 @@ function CardImage({ image }) {
   const handleDelete = async (id) => {
     try {
       if (confirm("Are you sure you want to delete the image?")) {
-        const res = await fetch(API_URL + `/images/delete/${id}`, {
+        const res = await fetch(process.env.NEXT_PUBLIC_API_URL + `/images/delete/${id}`, {
           method: "DELETE",
           headers: {
             Authorization: `Bearer ${token}`,

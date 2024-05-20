@@ -4,7 +4,6 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Image, Button } from "@nextui-org/react";
 import Cookies from 'js-cookie';
-import { API_URL } from "@/utils/const";
 
 function UploadPage() {
   const router = useRouter();
@@ -25,7 +24,7 @@ function UploadPage() {
       const formData = new FormData();
       formData.set("file", file);
 
-      const res = await fetch(API_URL + "/images/upload", {
+      const res = await fetch(process.env.NEXT_PUBLIC_API_URL + "/images/upload", {
         method: "POST",
         body: formData,
         headers: {

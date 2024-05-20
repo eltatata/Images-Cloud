@@ -1,12 +1,11 @@
 import CardImage from "./CardImage";
-import { API_URL } from "@/utils/const";
 
 import { cookies } from "next/headers";
 
 const getImages = async () => {
   const token = cookies().get("tokenSesionApp")
 
-  const res = await fetch(API_URL + "/images/user", {
+  const res = await fetch(process.env.API_URL + "/images/user", {
     headers: { Authorization: `Bearer ${token.value}` }
   });
   const data = await res.json();

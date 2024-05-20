@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Input, Button } from "@nextui-org/react";
-import { API_URL } from "@/utils/const";
 
 function RegisterPage() {
   const router = useRouter();
@@ -28,7 +27,7 @@ function RegisterPage() {
     try {
       setIsButtonDisabled(true);
 
-      const res = await fetch(API_URL + "/auth/register", {
+      const res = await fetch(process.env.NEXT_PUBLIC_API_URL + "/auth/register", {
         method: "POST",
         body: JSON.stringify(newUser),
         headers: {

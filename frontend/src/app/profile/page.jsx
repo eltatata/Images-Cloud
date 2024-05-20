@@ -2,14 +2,13 @@ import { Suspense } from "react";
 import { Spinner } from "@nextui-org/react";
 import Images from "@/components/Images";
 import CardProfile from "@/components/CardProfile";
-import { API_URL } from "@/utils/const";
 
 import { cookies } from 'next/headers'
 
 const getUser = async () => {
   const token = cookies().get("tokenSesionApp")
 
-  const res = await fetch(API_URL + "/profile", {
+  const res = await fetch(process.env.API_URL + "/profile", {
     headers: { Authorization: `Bearer ${token.value}` }
   });
   const data = await res.json();
