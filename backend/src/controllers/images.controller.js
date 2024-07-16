@@ -48,7 +48,11 @@ export const uploadImage = async (req, res) => {
 
             // guardar la imagen en la base de datos
             const image = new Image({
-                imageUrl: cloudinaryResponse.secure_url, // URL de cloudinary
+                name: req.body.name, // nombre de la imagen
+                description: req.body.description, // descripcion de la imagen
+                width: cloudinaryResponse.width, // ancho de la imagen
+                height: cloudinaryResponse.height, // alto de la imagen
+                url : cloudinaryResponse.secure_url, // URL de cloudinary
                 public_id: cloudinaryResponse.public_id, // public_id de cloudinary
                 uid: req.uid // id del usuario que la creo
             })

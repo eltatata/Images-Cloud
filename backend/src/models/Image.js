@@ -2,7 +2,24 @@ import mongoose from "mongoose";
 const { Schema, model } = mongoose;
 
 const imageSchema = new Schema({
-    imageUrl: {
+    name: {
+        type: String,
+        required: true,
+        trim: true,
+    },
+    description: {
+        type: String,
+        trim: true,
+    },
+    width: {
+        type: Number,
+        required: true,
+    },
+    height: {
+        type: Number,
+        required: true,
+    },
+    url: {
         type: String,
         required: true,
         trim: true,
@@ -19,7 +36,7 @@ const imageSchema = new Schema({
 }, {
     timestamps: {
         createdAt: true,
-        updatedAt: false,
+        updatedAt: true,
     }
 });
 
