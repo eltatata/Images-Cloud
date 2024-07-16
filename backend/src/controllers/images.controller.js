@@ -37,7 +37,7 @@ export const uploadImage = async (req, res) => {
 
             // subir la imagen a cloudinary
             const cloudinaryResponse = await new Promise((resolve, reject) => {
-                cloudinary.uploader.upload_stream({}, (err, res) => {
+                cloudinary.uploader.upload_stream({ folder: process.env.CLOUNDINARY_FOLDER }, (err, res) => {
                     if (err) {
                         reject(err);
                     }
