@@ -1,5 +1,6 @@
 import { Image } from "../models/Image.js";
 import { v2 as cloudinary } from 'cloudinary';
+import { NotFoundError } from '../utils/errors.manager.js';
 
 export const getImagesService = async (uid) => {
   const images = await Image.find({ uid }).lean();
@@ -8,7 +9,7 @@ export const getImagesService = async (uid) => {
 
 export const getImageService = async (id) => {
   const image = await Image.findById(id).lean();
-  if (!image) throw new Error('Imagen no encontrada');
+  if (!image) throw new NotFoundError('Imagen no encontrada');
   return image;
 }
 
@@ -40,7 +41,7 @@ export const uploadImageService = async (data) => {
 
 export const deleteImageService = async (id) => {
   const image = await Image.findByIdAndDelete(id);
-  if (!image) throw new Error('Imagen no encontrada');
+  if (!image) throw new NotFoundError('Imagen no encontrada');
 
   const { public_id } = image;
   await cloudinary.uploader.destroy(public_id, (error, result) => {

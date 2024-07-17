@@ -1,4 +1,5 @@
 import { getProfileSevice } from "../services/profile.service.js";
+import { handleHttp } from "../utils/http.manager.js";
 
 export const getProfile = async (req, res) => {
   try {
@@ -6,6 +7,6 @@ export const getProfile = async (req, res) => {
     const user = await getProfileSevice(uid);
     res.status(200).json({ user: user });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    handleHttp(res, error);
   }
 }

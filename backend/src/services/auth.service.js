@@ -1,10 +1,11 @@
 import { User } from '../models/User.js';
 import { hashPassword, comparePassword } from "../utils/password.manager.js";
 import { generateToken } from '../utils/token.manager.js';
+import { NotFoundError, BadRequestError } from '../utils/errors.manager.js';
 
 export const registerService = async (data) => {
   let user = await User.findOne({ email: data.email });
-  if (user) throw new Error('El usuario ya existe');
+  if (user) throw new BadRequestError('El usuario ya existe');
 
   user = new User({
     name: data.name,
@@ -19,8 +20,8 @@ export const registerService = async (data) => {
 
 export const loginService = async (data) => {
   const user = await User.findOne({ email: data.email });
-  if (!user) throw new Error('Usuario no encontrado');
-  if (!await comparePassword(data.password, user.password)) throw new Error('Contraseña incorrecta');
+  if (!user) throw new NotFoundError('Usuario no encontrado');
+  if (!await comparePassword(data.password, user.password)) throw new BadRequestError('Contraseña incorrecta');
 
   const token = generateToken({ uid: user._id, email: user.email });
 
