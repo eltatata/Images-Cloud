@@ -18,3 +18,9 @@ export const cloudinaryDelete = async (public_id) => {
     if (result.result !== "ok") throw new Error('Error al eliminar la imagen en Cloudinary');
   });
 }
+
+export const deleteImages = async (images) => {
+  for (const image of images) {
+    await cloudinaryDelete(image.public_id);
+  }
+}
