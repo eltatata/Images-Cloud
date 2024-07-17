@@ -19,7 +19,7 @@ export const cloudinaryDelete = async (public_id) => {
   });
 }
 
-export const deleteImages = async (images) => {
+export const cloudinaryDeleteImages = async (images) => {
   for (const image of images) {
     await cloudinaryDelete(image.public_id);
   }

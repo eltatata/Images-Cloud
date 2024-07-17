@@ -1,6 +1,6 @@
 import { User } from "../models/User.js";
 import { Image } from "../models/Image.js";
-import { deleteImages } from "./cloudinary.service.js";
+import { cloudinaryDeleteImages } from "./cloudinary.service.js";
 import { NotFoundError } from '../utils/errors.manager.js';
 
 export const getProfileSevice = async (uid) => {
@@ -14,7 +14,7 @@ export const deleteProfileService = async (uid) => {
   if (!user) throw new NotFoundError("Usuario no encontrado");
 
   const images = await Image.find({ uid }).lean();
-  await deleteImages(images);
+  await cloudinaryDeleteImages(images);
   await Image.deleteMany({ uid });
 
   await user.deleteOne();
