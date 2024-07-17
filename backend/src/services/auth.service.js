@@ -1,6 +1,6 @@
-import jwt from "jsonwebtoken";
 import { User } from '../models/User.js';
-import { hashPassword, comparePassword } from "../utils/password.handler.js";
+import { hashPassword, comparePassword } from "../utils/password.manager.js";
+import { generateToken } from '../utils/token.manager.js';
 
 export const registerService = async (data) => {
   let user = await User.findOne({ email: data.email });
@@ -22,11 +22,7 @@ export const loginService = async (data) => {
   if (!user) throw new Error('Usuario no encontrado');
   if (!await comparePassword(data.password, user.password)) throw new Error('Contraseña incorrecta');
 
-  const token = jwt.sign({
-    exp: Math.floor(Date.now() / 1000) + 30 * 24 * 60 * 60,
-    uid: user._id,
-    email: user.email
-  }, process.env.SECRET)
+  const token = generateToken({ uid: user._id, email: user.email });
 
   return { token, user };
 }

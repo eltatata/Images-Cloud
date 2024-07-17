@@ -1,6 +1,6 @@
 import express from "express";
 import { getProfile } from "../controllers/profile.controller.js";
-import { requireJwt } from "../middlewares/require.token.js";
+import { requireJwt } from "../middlewares/token.middleware.js";
 
 const router = express.Router();
 
