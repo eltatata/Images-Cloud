@@ -4,6 +4,7 @@ import {
   getImagesService,
   uploadImageService
 } from "../services/images.service.js";
+import { handleHttp } from "../utils/http.manager.js";
 
 export const getImages = async (req, res) => {
   try {
@@ -11,7 +12,7 @@ export const getImages = async (req, res) => {
     const images = await getImagesService(uid);
     res.status(200).json({ images });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    handleHttp(res, error);
   }
 }
 
@@ -21,7 +22,7 @@ export const getImage = async (req, res) => {
     const image = await getImageService(id);
     res.status(200).json({ image: image });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    handleHttp(res, error);
   }
 }
 
@@ -36,7 +37,7 @@ export const uploadImage = async (req, res) => {
     const image = await uploadImageService(data);
     res.status(201).json({ image });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    handleHttp(res, error);
   }
 }
 
@@ -46,6 +47,6 @@ export const deleteImage = async (req, res) => {
     const image = await deleteImageService(id);
     res.status(200).json({ image });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    handleHttp(res, error);
   }
 }

@@ -1,11 +1,8 @@
 import express from "express";
-
 import { deleteImage, getImage, getImages, uploadImage } from "../controllers/images.controller.js";
-
+import { paramIdValidator } from "../utils/validator.manager.js";
 import { uploadMiddleware } from "../middlewares/upload.middleware.js";
-
-import { requireJwt } from "../middlewares/require.token.js";
-import { paramIdValidator } from "../middlewares/validator.manager.js";
+import { requireJwt } from "../middlewares/token.middleware.js";
 
 const router = express.Router();
 
