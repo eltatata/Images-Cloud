@@ -26,7 +26,26 @@ export default function NavBar() {
   ];
 
   return (
-    <Navbar onMenuOpenChange={setIsMenuOpen} isBordered>
+    <Navbar
+      onMenuOpenChange={setIsMenuOpen}
+      className="bg-black bg-opacity-20"
+      classNames={{
+        item: [
+          "flex",
+          "relative",
+          "h-full",
+          "items-center",
+          "data-[active=true]:after:content-['']",
+          "data-[active=true]:after:absolute",
+          "data-[active=true]:after:bottom-0",
+          "data-[active=true]:after:left-0",
+          "data-[active=true]:after:right-0",
+          "data-[active=true]:after:h-[2px]",
+          "data-[active=true]:after:rounded-[2px]",
+          "data-[active=true]:after:bg-secondary",
+        ],
+      }}
+    >
       <NavbarContent>
         <NavbarMenuToggle
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
@@ -36,11 +55,17 @@ export default function NavBar() {
           <Link className="font-bold text-inherit text-xl" href="/">Images Cloud</Link>
         </NavbarBrand>
       </NavbarContent>
-
       <NavbarContent className="hidden sm:flex gap-4" justify="end">
         {menuItems.map((item, index) => (
-          <NavbarItem key={index}>
-            <Link color={pathname == item.path ? "primary" : "foreground"} href={item.path}>
+          <NavbarItem key=
+            {index}
+            isActive={pathname == item.path}
+          >
+            <Link
+              color={pathname == item.path ? "secondary" : "foreground"}
+              className="font-bold text-medium"
+              href={item.path}
+            >
               {item.name}
             </Link>
           </NavbarItem>
@@ -48,8 +73,15 @@ export default function NavBar() {
       </NavbarContent>
       <NavbarMenu>
         {menuItems.map((item, index) => (
-          <NavbarMenuItem key={index}>
-            <Link color={pathname == item.path ? "primary" : "foreground"} href={item.path}>
+          <NavbarMenuItem
+            key={index}
+            isActive={pathname == item.path}
+          >
+            <Link
+              color={pathname == item.path ? "secondary" : "foreground"}
+              className="font-bold text-medium"
+              href={item.path}
+            >
               {item.name}
             </Link>
           </NavbarMenuItem>
