@@ -21,8 +21,8 @@ async function ProfilePage() {
 
   return (
     <div className="flex flex-col items-center">
-      <CardProfile user={user} />
-      <Suspense
+      {/* <CardProfile user={user} /> */}
+      {/* <Suspense
         fallback={
           <div className="flex flex-col items-center mt-20">
             <h3 className="font-bold text-xl text-center p-2">Loading images...</h3>
@@ -31,7 +31,7 @@ async function ProfilePage() {
         }
       >
         <Images />
-      </Suspense>
+      </Suspense> */}
     </div>
   )
 }

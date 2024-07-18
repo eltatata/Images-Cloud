@@ -19,10 +19,11 @@ export default function NavBar() {
 
   const menuItems = [
     { name: "Home", path: "/" },
-    { name: "Upload image", path: "/images/upload" },
+    { name: "Upload", path: "/upload" },
+    { name: "Images", path: "/images" },
+    { name: "Register", path: "/auth/register" },
     { name: "Login", path: "/auth/login" },
     { name: "Profile", path: "/profile" },
-    { name: "Register", path: "/auth/register" },
   ];
 
   return (
