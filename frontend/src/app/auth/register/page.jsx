@@ -39,9 +39,6 @@ function RegisterPage() {
         router.refresh();
         router.push("/auth/login");
       }
-
-      const data = await res.json();
-      console.log(data);
     } catch (error) {
       console.log(error);
     } finally {

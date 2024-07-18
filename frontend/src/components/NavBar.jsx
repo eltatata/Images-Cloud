@@ -1,93 +1,32 @@
-"use client"
-
-import React, { useState } from "react";
-import {
-  Navbar,
-  NavbarBrand,
-  NavbarContent,
-  NavbarItem,
-  Link,
-  NavbarMenuToggle,
-  NavbarMenu,
-  NavbarMenuItem
-} from "@nextui-org/react";
-import { usePathname } from 'next/navigation'
+import { cookies } from "next/headers";
+import MainNav from "./MainNav";
 
 export default function NavBar() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const pathname = usePathname();
+  const token = cookies().get("tokenSesionApp")
 
-  const menuItems = [
+  const links = [
     { name: "Home", path: "/" },
-    { name: "Upload", path: "/upload" },
-    { name: "Images", path: "/images" },
-    { name: "Register", path: "/auth/register" },
-    { name: "Login", path: "/auth/login" },
-    { name: "Profile", path: "/profile" },
+    { name: "Upload", path: "/upload", requiresAuth: true },
+    { name: "Images", path: "/images", requiresAuth: true },
+    { name: "Register", path: "/auth/register", requiresAuth: false },
+    { name: "Login", path: "/auth/login", requiresAuth: false },
+    { name: "Profile", path: "/profile", requiresAuth: true },
   ];
 
+  const filteredlinks = links.filter(item => {
+    if (token && (item.path === "/auth/register" || item.path === "/auth/login")) {
+      return false;
+    }
+    if (!token && item.requiresAuth) {
+      return false;
+    }
+    return true;
+  });
+
   return (
-    <Navbar
-      onMenuOpenChange={setIsMenuOpen}
-      className="bg-black bg-opacity-20"
-      classNames={{
-        item: [
-          "flex",
-          "relative",
-          "h-full",
-          "items-center",
-          "data-[active=true]:after:content-['']",
-          "data-[active=true]:after:absolute",
-          "data-[active=true]:after:bottom-0",
-          "data-[active=true]:after:left-0",
-          "data-[active=true]:after:right-0",
-          "data-[active=true]:after:h-[2px]",
-          "data-[active=true]:after:rounded-[2px]",
-          "data-[active=true]:after:bg-secondary",
-        ],
-      }}
-    >
-      <NavbarContent>
-        <NavbarMenuToggle
-          aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-          className="sm:hidden"
-        />
-        <NavbarBrand>
-          <Link className="font-bold text-inherit text-xl" href="/">Images Cloud</Link>
-        </NavbarBrand>
-      </NavbarContent>
-      <NavbarContent className="hidden sm:flex gap-4" justify="end">
-        {menuItems.map((item, index) => (
-          <NavbarItem key=
-            {index}
-            isActive={pathname == item.path}
-          >
-            <Link
-              color={pathname == item.path ? "secondary" : "foreground"}
-              className="font-bold text-medium"
-              href={item.path}
-            >
-              {item.name}
-            </Link>
-          </NavbarItem>
-        ))}
-      </NavbarContent>
-      <NavbarMenu>
-        {menuItems.map((item, index) => (
-          <NavbarMenuItem
-            key={index}
-            isActive={pathname == item.path}
-          >
-            <Link
-              color={pathname == item.path ? "secondary" : "foreground"}
-              className="font-bold text-medium"
-              href={item.path}
-            >
-              {item.name}
-            </Link>
-          </NavbarMenuItem>
-        ))}
-      </NavbarMenu>
-    </Navbar >
+    <MainNav
+      links={filteredlinks}
+      token={token ? true : false}
+    />
   );
 }

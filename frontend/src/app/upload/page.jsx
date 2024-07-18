@@ -67,8 +67,6 @@ export default function UploadPage() {
         router.refresh();
         router.push("/images");
       }
-
-      console.log(await res.json());
     } catch (error) {
       console.log(error);
     } finally {

@@ -3,7 +3,6 @@
 import { useState } from "react";
 import Cookies from 'js-cookie';
 import { useRouter } from "next/navigation";
-import Image from "next/image";
 import { Input, Button } from "@nextui-org/react";
 
 function LoginPage() {
@@ -30,6 +29,7 @@ function LoginPage() {
       if (res.ok) {
         router.refresh();
         router.push("/profile");
+        router.refresh();
       }
 
       const data = await res.json();
