@@ -85,9 +85,9 @@ export default function MainNav({ links, token }) {
           </NavbarMenuItem>
         ))}
         {token && (
-          <NavbarItem>
+          <NavbarMenuItem>
             <ButtonLogout />
-          </NavbarItem>
+          </NavbarMenuItem>
         )}
       </NavbarMenu>
     </Navbar>
