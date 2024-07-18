@@ -1,30 +1,61 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { Image, Button } from "@nextui-org/react";
 import Cookies from 'js-cookie';
+import { useRouter } from "next/navigation";
+import { Button, Textarea, Input } from "@nextui-org/react";
 
-function UploadPage() {
+export default function UploadPage() {
   const router = useRouter();
   const token = Cookies.get("tokenSesionApp");
 
-  const [file, setFile] = useState(null);
-  const [imagePreview, setImagePreview] = useState(null);
-  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+  const [image, setImage] = useState(null);
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
+  const [preview, setPreview] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    const file = e.dataTransfer.files[0];
+    if (file && file.type.startsWith('image/')) {
+      setImage(file);
+      setPreview(URL.createObjectURL(file));
+    }
+  };
+
+  const handleDragEnter = (e) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e) => {
+    e.preventDefault();
+    setIsDragging(false);
+  };
+
+  const handleChange = (e) => {
+    const file = e.target.files?.[0] || null;
+    if (file && file.type.startsWith('image/')) {
+      setImage(file);
+      setPreview(URL.createObjectURL(file));
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!image) return;
 
     try {
-      if (!file) return alert("Select a file");
-
-      setIsButtonDisabled(true);
+      setLoading(true);
 
       const formData = new FormData();
-      formData.set("file", file);
+      formData.set("image", image);
+      formData.set("name", name);
+      formData.set("description", description);
 
-      const res = await fetch(process.env.NEXT_PUBLIC_API_URL + "/images/upload", {
+      const res = await fetch(process.env.NEXT_PUBLIC_API_URL + "/images", {
         method: "POST",
         body: formData,
         headers: {
@@ -34,63 +65,77 @@ function UploadPage() {
 
       if (res.ok) {
         router.refresh();
-        router.push("/profile");
+        router.push("/images");
       }
 
       console.log(await res.json());
     } catch (error) {
       console.log(error);
     } finally {
-      setIsButtonDisabled(false);
+      setLoading(false);
+      setPreview('');
     }
   }
 
   return (
-    <div className="flex flex-col justify-center items-center h-[80vh]">
-      <div className={`${!imagePreview ? "border border-dashed" : ""} rounded-lg mb-10`}>
-        {imagePreview ? (
-          <Image
-            isBlurred
-            width={400}
-            src={imagePreview}
-            alt="image-preview"
-          />
+    <form
+      className='space-y-6 mt-6 p-5 max-w-xl mx-auto border border-neutral-700 rounded-md'
+      onSubmit={handleSubmit}
+    >
+      <div
+        className={`flex items-center justify-center h-[350px] mx-auto mb-20 rounded-lg border-2 border-dashed ${isDragging ? 'border-blue-500' : 'border-neutral-500'
+          } cursor-pointer`}
+        onDragOver={(e) => e.preventDefault()}
+        onDrop={handleDrop}
+        onDragEnter={handleDragEnter}
+        onDragLeave={handleDragLeave}
+      >
+        {!preview ? (
+          <div className="text-center text-gray-500">
+            <p>Drag your files here</p>
+            <p>or</p>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleChange}
+              className="hidden"
+              id="fileInput"
+            />
+            <label
+              htmlFor="fileInput"
+              className="underline text-blue-500 cursor-pointer"
+            >
+              click to select
+            </label>
+          </div>
         ) : (
-          <h2 className="p-5">No image selected</h2>
+          <img src={preview} alt="Preview" className="h-full w-full object-cover rounded-lg" />
         )}
       </div>
-      <form
-        className="flex items-center gap-3 bg-neutral-800 p-3 rounded-lg"
-        method="post"
-        encType="multipart/form-data"
-        onSubmit={handleSubmit}
+      <Input
+        type="text"
+        variant="bordered"
+        label="Name"
+        labelPlacement="outside"
+        placeholder="Enter a name"
+        onChange={(e) => setName(e.target.value)}
+      />
+      <Textarea
+        variant="bordered"
+        label="Description"
+        labelPlacement="outside"
+        placeholder="Enter your description"
+        className="col-span-12 md:col-span-6 mb-6 md:mb-0"
+        onChange={(e) => setDescription(e.target.value)}
+      />
+      <Button
+        type="submit"
+        className="w-full"
+        isDisabled={loading}
+        isLoading={loading}
       >
-        <input
-          type="file"
-          name="file"
-          onChange={async (e) => {
-            const selectedFile = e.target.files?.[0];
-            setFile(selectedFile);
-
-            if (selectedFile) {
-              const imageUrl = URL.createObjectURL(selectedFile);
-              setImagePreview(imageUrl);
-            } else {
-              setImagePreview(null);
-            }
-          }}
-        />
-        <Button
-          type="submit"
-          color="primary"
-          isDisabled={isButtonDisabled}
-          isLoading={isButtonDisabled}
-        >
-          Upload
-        </Button>
-      </form>
-    </div>
+        Upload
+      </Button>
+    </form>
   )
 }
-
-export default UploadPage;

@@ -50,42 +50,47 @@ function RegisterPage() {
   }
 
   return (
-    <div className="flex justify-center items-center h-[80vh]">
+
+    <div className="flex justify-between items-start w-full h-[93vh]">
       <form
-        className='flex flex-col items-center gap-3 p-10 bg-neutral-800 rounded-lg'
+        className='flex-1 space-y-6 mt-40 p-5 max-w-sm mx-auto'
         onSubmit={handleSubmit}
       >
-        <h2 className='font-bold text-3xl'>Register</h2>
+        <div className="flex flex-col items-center gap-2">
+          <h2 className='font-bold text-2xl'>Register</h2>
+          <p className="text-sm text-neutral-400">Enter your information to create an account</p>
+        </div>
         <Input
           type="username"
           label="Username"
-          variant="underlined"
+          variant="bordered"
           name="username"
           onChange={handleChange}
         />
         <Input
           type="email"
           label="Email"
-          variant="underlined"
+          variant="bordered"
           name="email"
           onChange={handleChange}
         />
         <Input
           type="password"
           label="Password"
-          variant="underlined"
+          variant="bordered"
           name="password"
           onChange={handleChange}
         />
         <Button
-          color="primary"
           type="submit"
+          className="w-full"
           isDisabled={isButtonDisabled}
           isLoading={isButtonDisabled}
         >
           Send
         </Button>
       </form>
+      <div className="hidden lg:block w-2/5 h-full bg-[url('/bg-img-signup.png')] bg-cover bg-center bg-no-repeat" />
     </div>
   )
 }
