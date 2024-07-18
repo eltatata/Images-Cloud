@@ -24,6 +24,10 @@ export default async function ImagesPage() {
   const numCols = 4;
   const columns = distributeImages(images, numCols);
 
+  if (images.length === 0) {
+    return <div className="text-center text-2xl pt-8">No images found</div>;
+  }
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 p-4">
       {columns.map((col, colIndex) => (
