@@ -9,7 +9,13 @@ import {
 
 export default function ModalAlert({ isOpen, isLoading, onOpenChange, onConfirm, children }) {
   return (
-    <Modal isOpen={isOpen} onOpenChange={onOpenChange} isDismissable={false} isKeyboardDismissDisabled={true}>
+    <Modal
+      isOpen={isOpen}
+      onOpenChange={onOpenChange}
+      backdrop="blur"
+      isDismissable={false}
+      isKeyboardDismissDisabled={true}
+    >
       <ModalContent>
         {(onClose) => (
           <>
