@@ -4,6 +4,7 @@ import "./database/db.js";
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import mongoSanitize from "express-mongo-sanitize";
 import { v2 as cloudinary } from 'cloudinary';
 
 import authRouter from "./routes/auth.router.js";
@@ -34,6 +35,7 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(mongoSanitize());
 
 app.use("/auth/", authRouter)
 app.use("/profile/", profileRouter)
