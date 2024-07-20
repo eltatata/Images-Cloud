@@ -7,9 +7,10 @@ export const getImagesService = async (uid) => {
   return images;
 }
 
-export const getImageService = async (id) => {
+export const getImageService = async (id, uid) => {
   const image = await Image.findById(id).lean();
   if (!image) throw new NotFoundError('Imagen no encontrada');
+  if (!image.uid.equals(uid)) throw new ForbiddenError('No tienes permisos para ver esta imagen');
   return image;
 }
 

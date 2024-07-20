@@ -19,7 +19,8 @@ export const getImages = async (req, res) => {
 export const getImage = async (req, res) => {
   try {
     const { id } = req.params;
-    const image = await getImageService(id);
+    const uid = req.uid;
+    const image = await getImageService(id, uid);
     res.status(200).json({ image: image });
   } catch (error) {
     handleHttp(res, error);
