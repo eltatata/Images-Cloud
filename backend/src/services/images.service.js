@@ -1,6 +1,6 @@
 import { Image } from "../models/Image.js";
 import { cloudinaryUpload, cloudinaryDelete } from "./cloudinary.service.js";
-import { NotFoundError, BadRequestError } from '../utils/errors.manager.js';
+import { NotFoundError, BadRequestError, ForbiddenError } from '../utils/errors.manager.js';
 
 export const getImagesService = async (uid) => {
   const images = await Image.find({ uid }).lean();
@@ -33,9 +33,13 @@ export const uploadImageService = async (data) => {
   return image;
 }
 
-export const deleteImageService = async (id) => {
-  const image = await Image.findByIdAndDelete(id);
+export const deleteImageService = async (id, uid) => {
+  const image = await Image.findById(id);
+
   if (!image) throw new NotFoundError('Imagen no encontrada');
+  if (!image.uid.equals(uid)) throw new ForbiddenError('No tienes permisos para borrar esta imagen');
+
+  await Image.deleteOne();
 
   const { public_id } = image;
   await cloudinaryDelete(public_id);

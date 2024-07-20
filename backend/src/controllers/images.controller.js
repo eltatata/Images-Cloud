@@ -44,7 +44,8 @@ export const uploadImage = async (req, res) => {
 export const deleteImage = async (req, res) => {
   try {
     const { id } = req.params;
-    const image = await deleteImageService(id);
+    const uid = req.uid;
+    const image = await deleteImageService(id, uid);
     res.status(200).json({ image });
   } catch (error) {
     handleHttp(res, error);

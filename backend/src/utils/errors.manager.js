@@ -17,4 +17,10 @@ class BadRequestError extends HttpError {
   }
 }
 
-export { HttpError, NotFoundError, BadRequestError };
+class ForbiddenError extends HttpError {
+  constructor(message = 'Forbidden') {
+    super(403, message);
+  }
+}
+
+export { HttpError, NotFoundError, BadRequestError, ForbiddenError };
