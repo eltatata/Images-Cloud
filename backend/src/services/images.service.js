@@ -1,6 +1,6 @@
 import { Image } from "../models/Image.js";
 import { cloudinaryUpload, cloudinaryDelete } from "./cloudinary.service.js";
-import { NotFoundError } from '../utils/errors.manager.js';
+import { NotFoundError, BadRequestError } from '../utils/errors.manager.js';
 
 export const getImagesService = async (uid) => {
   const images = await Image.find({ uid }).lean();
@@ -14,8 +14,9 @@ export const getImageService = async (id) => {
 }
 
 export const uploadImageService = async (data) => {
-  const buffer = data.image.buffer;
+  if (!data.name) throw new BadRequestError('El nombre de la imagen es requerido');
 
+  const buffer = data.image.buffer;
   const cloudinaryResponse = await cloudinaryUpload(buffer);
 
   const image = new Image({
