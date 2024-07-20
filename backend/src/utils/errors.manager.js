@@ -23,4 +23,10 @@ class ForbiddenError extends HttpError {
   }
 }
 
-export { HttpError, NotFoundError, BadRequestError, ForbiddenError };
+class UnauthorizedError extends HttpError {
+  constructor(message = 'Unauthorized') {
+    super(401, message);
+  }
+}
+
+export { HttpError, NotFoundError, BadRequestError, ForbiddenError, UnauthorizedError };
