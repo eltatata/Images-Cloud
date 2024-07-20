@@ -1,6 +1,7 @@
+import { User } from "../models/User.js";
 import { verifyToken } from "../utils/token.manager.js";
 
-export const requireJwt = (req, res, next) => {
+export const requireJwt = async (req, res, next) => {
   try {
     let token = req.headers?.authorization;
     if (!token) {
@@ -11,6 +12,11 @@ export const requireJwt = (req, res, next) => {
     const payload = verifyToken(token);
     if (!payload) {
       return res.status(401).json({ error: "Acceso no autorizado, Token inválido" });
+    }
+
+    const user = await User.findById(payload.uid);
+    if (!user) {
+      return res.status(401).json({ error: "Acceso no autorizado, Usuario no encontrado" });
     }
 
     req.uid = payload.uid;
