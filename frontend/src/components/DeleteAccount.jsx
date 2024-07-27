@@ -11,6 +11,7 @@ export default function DeleteAccount() {
   const token = Cookies.get("tokenSesionApp");
 
   const [open, setOpen] = useState(false);
+  const [error, setError] = useState(null);
   const [text, setText] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -18,7 +19,11 @@ export default function DeleteAccount() {
     try {
       setLoading(true);
 
-      if (text !== 'delete my profile') throw new Error('Text does not match');
+      if (!text || text !== 'delete my profile') {
+        setError('The text entered is incorrect');
+        setOpen(true);
+        return;
+      }
 
       const res = await fetch(process.env.NEXT_PUBLIC_API_URL + "/profile", {
         method: "DELETE",
@@ -64,15 +69,20 @@ export default function DeleteAccount() {
         onOpenChange={setOpen}
         onConfirm={handleDeleteAccount}
       >
-        <div className='space-y-2'>
+        <div className='space-y-6'>
           <p>
             enter the following text <i><b className='text-red-500'>delete my profile</b></i> to delete your account permanently
           </p>
-          <Input
-            type='text'
-            variant='bordered'
-            onChange={(e) => setText(e.target.value)}
-          />
+          <div className='space-y-2'>
+            <Input
+              type='text'
+              variant='bordered'
+              placeholder='delete my profile'
+              className='text-red-500'
+              onChange={(e) => setText(e.target.value)}
+            />
+            {error && <p className='text-xs text-red-500'>{error}</p>}
+          </div>
         </div>
       </ModalAlert>
     </>
