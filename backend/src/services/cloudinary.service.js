@@ -13,9 +13,15 @@ export const cloudinaryUpload = async (buffer) => {
   return response;
 }
 
-export const cloudinaryDelete = async (public_id) => {
-  await cloudinary.uploader.destroy(public_id, (error, result) => {
-    if (result.result !== "ok") throw new Error('Error al eliminar la imagen en Cloudinary');
+export const cloudinaryDelete = (public_id) => {
+  return new Promise((resolve, reject) => {
+    cloudinary.uploader.destroy(public_id, (error, result) => {
+      if (error || result.result !== "ok") {
+        reject(new Error('Error al eliminar la imagen en Cloudinary'));
+      } else {
+        resolve(result);
+      }
+    });
   });
 }
 
