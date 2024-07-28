@@ -13,20 +13,11 @@ export const cloudinaryUpload = async (buffer, uid) => {
   return response;
 }
 
-export const cloudinaryDelete = (public_id) => {
-  return new Promise((resolve, reject) => {
-    cloudinary.uploader.destroy(public_id, (error, result) => {
-      if (error || result.result !== "ok") {
-        reject(new Error('Error al eliminar la imagen en Cloudinary'));
-      } else {
-        resolve(result);
-      }
-    });
-  });
+export const cloudinaryDelete = async (public_id) => {
+  await cloudinary.uploader.destroy(public_id);
 }
 
-export const cloudinaryDeleteImages = async (images) => {
-  for (const image of images) {
-    await cloudinaryDelete(image.public_id);
-  }
+export const cloudinaryDeleteFolder = async (uid) => {
+  await cloudinary.api.delete_resources_by_prefix(`${process.env.CLOUNDINARY_FOLDER}/${uid}`);
+  await cloudinary.api.delete_folder(`${process.env.CLOUNDINARY_FOLDER}/${uid}`);
 }
