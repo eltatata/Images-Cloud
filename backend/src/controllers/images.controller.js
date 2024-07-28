@@ -9,8 +9,11 @@ import { handleHttp } from "../utils/http.manager.js";
 export const getImages = async (req, res) => {
   try {
     const uid = req.uid
-    const images = await getImagesService(uid);
-    res.status(200).json({ images });
+    const page = parseInt(req.query.page) || 1;
+    const limit = 20
+    const skip = (page - 1) * limit;
+    const data = await getImagesService(uid, skip, limit);
+    res.status(200).json(data);
   } catch (error) {
     handleHttp(res, error);
   }

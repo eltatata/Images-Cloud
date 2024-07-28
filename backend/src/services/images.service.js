@@ -2,9 +2,11 @@ import { Image } from "../models/Image.js";
 import { cloudinaryUpload, cloudinaryDelete } from "./cloudinary.service.js";
 import { NotFoundError, BadRequestError, ForbiddenError } from '../utils/errors.manager.js';
 
-export const getImagesService = async (uid) => {
-  const images = await Image.find({ uid }).lean();
-  return images;
+export const getImagesService = async (uid, skip, limit) => {
+  const images = await Image.find({ uid }).skip(skip).limit(limit).lean();
+  const total = await Image.countDocuments({ uid });
+  const totalPages = Math.ceil(total / limit);
+  return { images, total, totalPages };
 }
 
 export const getImageService = async (id, uid) => {
