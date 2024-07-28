@@ -40,10 +40,10 @@ export const deleteImageService = async (id, uid) => {
   if (!image) throw new NotFoundError('Imagen no encontrada');
   if (!image.uid.equals(uid)) throw new ForbiddenError('No tienes permisos para borrar esta imagen');
 
-  await Image.deleteOne();
-
   const { public_id } = image;
   await cloudinaryDelete(public_id);
+
+  await image.deleteOne();
 
   return image;
 }
