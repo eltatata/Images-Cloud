@@ -1,8 +1,8 @@
 import { v2 as cloudinary } from 'cloudinary';
 
-export const cloudinaryUpload = async (buffer) => {
+export const cloudinaryUpload = async (buffer, uid) => {
   const response = await new Promise((resolve, reject) => {
-    cloudinary.uploader.upload_stream({ folder: process.env.CLOUNDINARY_FOLDER }, (err, res) => {
+    cloudinary.uploader.upload_stream({ folder: `${process.env.CLOUNDINARY_FOLDER}/${uid}` }, (err, res) => {
       if (err) {
         reject(err);
       }

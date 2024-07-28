@@ -18,7 +18,7 @@ export const uploadImageService = async (data) => {
   if (!data.name) throw new BadRequestError('El nombre de la imagen es requerido');
 
   const buffer = data.image.buffer;
-  const cloudinaryResponse = await cloudinaryUpload(buffer);
+  const cloudinaryResponse = await cloudinaryUpload(buffer, data.uid);
 
   const image = new Image({
     name: data.name,
