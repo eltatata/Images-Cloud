@@ -21,12 +21,20 @@ function LoginPage() {
   const reason = searchParams.get('reason')
 
   const [error, setError] = useState(null);
+  const [message, setMessage] = useState(null);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    if (reason === "unauthorized") {
-      setIsOpen(true);
+    switch (reason) {
+      case "unauthorized":
+        setIsOpen(true);
+        break;
+      case "verified":
+        setMessage("Your account has been verified, please login to continue");
+        break;
+      default:
+        break;
     }
   }, [reason]);
 
@@ -74,6 +82,9 @@ function LoginPage() {
             <p className="text-sm text-neutral-400">Enter your email below to login to your account</p>
             {error && (
               <span className="p-2 rounded-lg text-red-500">{error}</span>
+            )}
+            {message && (
+              <span className="p-2 rounded-lg text-green-500">{message}</span>
             )}
           </div>
           <div className="space-y-2">
