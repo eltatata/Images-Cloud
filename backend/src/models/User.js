@@ -18,6 +18,13 @@ const userSchema = new Schema({
     type: String,
     required: true
   },
+  token : {
+    type: String
+  },
+  confirmed: {
+    type: Boolean,
+    default: false
+  },
 });
 
 export const User = model("User", userSchema);
