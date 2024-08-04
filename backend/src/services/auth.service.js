@@ -27,7 +27,7 @@ export const loginService = async (data) => {
   const user = await User.findOne({ email: data.email });
   if (!user) throw new NotFoundError('Usuario no encontrado');
   if (!await comparePassword(data.password, user.password)) throw new BadRequestError('Contraseña incorrecta');
-  if (!user.confirmed) throw new ForbiddenError('Usuario no verificado');
+  if (!user.confirmed) throw new ForbiddenError('Usuario no verificado, revise su correo electrónico');
 
   const token = generateToken({ uid: user._id, email: user.email });
 
@@ -36,7 +36,7 @@ export const loginService = async (data) => {
 
 export const verifyService = async (token) => {
   const user = await User.findOne({ token });
-  if (!user) throw new NotFoundError('Usuario no encontrado');
+  if (!user) throw new BadRequestError('Link de verificación inválido');
 
   user.confirmed = true;
   user.token = undefined;

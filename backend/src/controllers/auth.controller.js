@@ -24,8 +24,8 @@ export const login = async (req, res) => {
 export const verify = async (req, res) => {
   try {
     const token = req.params.token;
-    const user = await verifyService(token);
-    res.status(200).json({ user });
+    await verifyService(token);
+    res.redirect(`${process.env.ORIGIN1}/auth/login?reason=verified`);
   } catch (error) {
     handleHttp(res, error);
   }
