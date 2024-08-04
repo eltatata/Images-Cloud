@@ -1,3 +1,4 @@
+import crypto from "crypto"
 import { User } from '../models/User.js';
 import { hashPassword, comparePassword } from "../utils/password.manager.js";
 import { generateToken } from '../utils/token.manager.js';
@@ -12,6 +13,7 @@ export const registerService = async (data) => {
     username: data.username,
     email: data.email,
     password: await hashPassword(data.password),
+    token: crypto.randomBytes(16).toString('hex'),
   });
   await user.save();
 
