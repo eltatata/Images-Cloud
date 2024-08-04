@@ -20,3 +20,13 @@ export const login = async (req, res) => {
     handleHttp(res, error);
   }
 }
+
+export const verify = async (req, res) => {
+  try {
+    const token = req.params.token;
+    const user = await verifyService(token);
+    res.status(200).json({ user });
+  } catch (error) {
+    handleHttp(res, error);
+  }
+}
