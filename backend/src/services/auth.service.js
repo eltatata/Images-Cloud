@@ -3,6 +3,7 @@ import { User } from '../models/User.js';
 import { hashPassword, comparePassword } from "../utils/password.manager.js";
 import { generateToken } from '../utils/token.manager.js';
 import { NotFoundError, BadRequestError } from '../utils/errors.manager.js';
+import { sendVerificationEmail } from "./email.service.js";
 
 export const registerService = async (data) => {
   let user = await User.findOne({ email: data.email });
@@ -16,6 +17,8 @@ export const registerService = async (data) => {
     token: crypto.randomBytes(16).toString('hex'),
   });
   await user.save();
+
+  await sendVerificationEmail(user.email, user.token);
 
   return user;
 }
