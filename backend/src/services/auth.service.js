@@ -27,3 +27,14 @@ export const loginService = async (data) => {
 
   return { token, user };
 }
+
+export const verifyService = async (token) => {
+  const user = await User.findOne({ token });
+  if (!user) throw new NotFoundError('Usuario no encontrado');
+
+  user.confirmed = true;
+  user.token = undefined;
+  await user.save();
+
+  return user;
+}
