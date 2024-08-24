@@ -9,6 +9,14 @@ export const getProfileSevice = async (uid) => {
   return user;
 }
 
+export const updateProfileService = async (uid, data) => {
+  const user = await User.findById(uid);
+  if (!user) throw new NotFoundError("Usuario no encontrado");
+
+  const updatedUser = await User.findByIdAndUpdate(uid, data, { new: true });
+  return updatedUser;
+}
+
 export const deleteProfileService = async (uid) => {
   const user = await User.findById(uid);
   if (!user) throw new NotFoundError("Usuario no encontrado");
