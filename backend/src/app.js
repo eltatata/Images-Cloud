@@ -29,7 +29,7 @@ app.use(cors({
       callback(new Error('Acceso denegado por CORS'));
     }
   },
-  methods: ['GET', 'POST', 'DELETE'],
+  methods: ['GET', 'POST', 'DELETE', 'PUT'],
 }));
 
 app.use(express.json());
